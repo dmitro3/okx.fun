@@ -17,3 +17,11 @@ export function formatNumber(num: number): string {
   }
   return num.toString()
 }
+
+export function formatPercent(num: number): string {
+  const percent = num * 100
+  if (Math.abs(percent) < 0.01) {
+    return '0.00%'
+  }
+  return `${percent >= 0 ? '+' : ''}${percent.toFixed(2)}%`
+}
