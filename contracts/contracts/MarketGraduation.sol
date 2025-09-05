@@ -86,7 +86,7 @@ contract MarketGraduation is ReentrancyGuard, Ownable {
         address _okieFactoryV3,
         address _okieRouterV3,
         address _WOKB
-    ) {
+    ) Ownable(msg.sender) ReentrancyGuard() {
         require(_okieRouterV2 != address(0), "Invalid V2 router");
         require(_okieFactoryV2 != address(0), "Invalid V2 factory");
         require(_okieFactoryV3 != address(0), "Invalid V3 factory");
@@ -192,7 +192,7 @@ contract MarketGraduation is ReentrancyGuard, Ownable {
         }
         
         // Approve tokens for router
-        IERC20(token).safeApprove(address(okieRouterV2), liquidityTokens);
+        IERC20(token).approve(address(okieRouterV2), liquidityTokens);
         
         // Add liquidity
         try okieRouterV2.addLiquidityOKB{

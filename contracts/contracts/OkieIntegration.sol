@@ -93,7 +93,7 @@ contract OkieIntegration is ReentrancyGuard, Ownable {
         address _okieFactoryV3,
         address _okieRouterV3,
         address _WOKB
-    ) {
+    ) Ownable(msg.sender) ReentrancyGuard() {
         require(_okieRouterV2 != address(0), "Invalid V2 router");
         require(_okieFactoryV2 != address(0), "Invalid V2 factory");
         require(_okieFactoryV3 != address(0), "Invalid V3 factory");
@@ -238,7 +238,7 @@ contract OkieIntegration is ReentrancyGuard, Ownable {
             
         } else if (!isOKBIn && isOKBOut) {
             // Token -> OKB
-            IERC20(params.tokenIn).safeApprove(address(okieRouterV2), params.amountIn);
+            IERC20(params.tokenIn).approve(address(okieRouterV2), params.amountIn);
             
             address[] memory path = new address[](2);
             path[0] = params.tokenIn;
@@ -256,7 +256,7 @@ contract OkieIntegration is ReentrancyGuard, Ownable {
             
         } else if (!isOKBIn && !isOKBOut) {
             // Token -> Token (via WOKB)
-            IERC20(params.tokenIn).safeApprove(address(okieRouterV2), params.amountIn);
+            IERC20(params.tokenIn).approve(address(okieRouterV2), params.amountIn);
             
             address[] memory path = new address[](3);
             path[0] = params.tokenIn;
@@ -303,7 +303,7 @@ contract OkieIntegration is ReentrancyGuard, Ownable {
             
         } else if (!isOKBIn && isOKBOut) {
             // Token -> OKB
-            IERC20(params.tokenIn).safeApprove(address(okieRouterV3), params.amountIn);
+            IERC20(params.tokenIn).approve(address(okieRouterV3), params.amountIn);
             
             IOkieSwapV3SmartRouter.ExactInputSingleParams memory swapParams = 
                 IOkieSwapV3SmartRouter.ExactInputSingleParams({

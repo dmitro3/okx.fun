@@ -55,7 +55,7 @@ contract MemeToken is ERC20, ERC20Burnable, Ownable, Pausable {
         uint256 _maxSupply,
         address _initialOwner,
         address _bondingCurve
-    ) ERC20(_name, _symbol) {
+    ) ERC20(_name, _symbol) Ownable(_initialOwner) {
         require(_maxSupply > 0, "Max supply must be > 0");
         require(_initialOwner != address(0), "Invalid initial owner");
         require(_bondingCurve != address(0), "Invalid bonding curve");
@@ -64,8 +64,6 @@ contract MemeToken is ERC20, ERC20Burnable, Ownable, Pausable {
         imageUrl = _imageUrl;
         maxSupply = _maxSupply;
         bondingCurve = _bondingCurve;
-        
-        _transferOwnership(_initialOwner);
         
         // Mint initial supply to bonding curve
         _mint(_bondingCurve, _maxSupply);
@@ -153,8 +151,8 @@ contract MemeToken is ERC20, ERC20Burnable, Ownable, Pausable {
         address pool
     ) {
         return (
-            name(),
-            symbol(),
+            super.name(),
+            super.symbol(),
             description,
             imageUrl,
             website,
@@ -171,13 +169,13 @@ contract MemeToken is ERC20, ERC20Burnable, Ownable, Pausable {
     /**
      * @dev Override transfer to include pause functionality
      */
-    function _beforeTokenTransfer(
+    function _update(
         address from,
         address to,
         uint256 amount
     ) internal virtual override {
-        super._beforeTokenTransfer(from, to, amount);
         require(!paused(), "Token transfers are paused");
+        super._update(from, to, amount);
     }
     
     /**

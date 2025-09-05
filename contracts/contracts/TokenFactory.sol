@@ -64,7 +64,7 @@ contract TokenFactory is Ownable, ReentrancyGuard, Pausable {
      * @dev Constructor
      * @param _bondingCurve Address of bonding curve contract
      */
-    constructor(address _bondingCurve) {
+    constructor(address _bondingCurve) Ownable(msg.sender) {
         require(_bondingCurve != address(0), "Invalid bonding curve");
         bondingCurve = BondingCurve(_bondingCurve);
     }

@@ -64,7 +64,7 @@ contract BondingCurve is ReentrancyGuard, Ownable, Pausable {
     constructor(
         address _feeManager,
         address _marketGraduation
-    ) {
+    ) Ownable(msg.sender) {
         require(_feeManager != address(0), "Invalid fee manager");
         require(_marketGraduation != address(0), "Invalid market graduation");
         
