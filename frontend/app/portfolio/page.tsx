@@ -1,23 +1,44 @@
 'use client'
 
-import { useAccount } from 'wagmi'
-import { PortfolioStats } from '@/components/portfolio/portfolio-stats'
+import { useState } from 'react'
+import { PortfolioOverview } from '@/components/portfolio/portfolio-overview'
 import { HoldingsTable } from '@/components/portfolio/holdings-table'
-import { TransactionHistory } from '@/components/portfolio/transaction-history'
-import { PnLChart } from '@/components/portfolio/pnl-chart'
 import { ConnectWalletCard } from '@/components/ui/connect-wallet-card'
 
 export default function PortfolioPage() {
-  const { address, isConnected } = useAccount()
+  const [isConnected, setIsConnected] = useState(false)
+
+  // Mock data - replace with actual data
+  const mockStats = {
+    totalValue: 12456,
+    totalChange: 8.5,
+    totalTokens: 12,
+    activePositions: 8
+  }
+
+  const mockHoldings = [
+    {
+      token: {
+        name: "Doge Killer",
+        symbol: "DOGEEK",
+        imageUrl: "/api/placeholder/40/40",
+        address: "0x123"
+      },
+      balance: 10000,
+      value: 1234,
+      change24h: 15.6,
+      avgBuyPrice: 0.0001,
+      currentPrice: 0.000123,
+      pnl: 230,
+      pnlPercent: 23.0
+    }
+  ]
 
   if (!isConnected) {
     return (
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-md mx-auto">
-          <ConnectWalletCard 
-            title="Connect Your Wallet"
-            description="Please connect your wallet to view your portfolio"
-          />
+          <ConnectWalletCard />
         </div>
       </div>
     )
@@ -28,20 +49,9 @@ export default function PortfolioPage() {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-5xl font-bold mb-8">Your Portfolio</h1>
         
-        <div className="grid gap-6 mb-8">
-          <PortfolioStats address={address!} />
-          <PnLChart address={address!} />
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Your Holdings</h2>
-            <HoldingsTable address={address!} />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Recent Transactions</h2>
-            <TransactionHistory address={address!} />
-          </div>
+        <div className="space-y-8">
+          <PortfolioOverview stats={mockStats} />
+          <HoldingsTable holdings={mockHoldings} />
         </div>
       </div>
     </div>

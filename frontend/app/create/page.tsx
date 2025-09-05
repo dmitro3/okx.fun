@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { TokenCreationForm } from '@/components/create/token-creation-form'
-import { PreviewCard } from '@/components/create/preview-card'
-import { CreationGuide } from '@/components/create/creation-guide'
+import { TokenPreview } from '@/components/create/token-preview'
 
 export default function CreatePage() {
   const router = useRouter()
@@ -13,14 +12,8 @@ export default function CreatePage() {
     symbol: '',
     description: '',
     imageUrl: '',
-    twitter: '',
-    telegram: '',
-    website: '',
+    initialSupply: '1000000000'
   })
-
-  const handleTokenCreated = (tokenAddress: string) => {
-    router.push(`/token/${tokenAddress}`)
-  }
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -34,14 +27,10 @@ export default function CreatePage() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <TokenCreationForm 
-              onTokenDataChange={setTokenData}
-              onTokenCreated={handleTokenCreated}
-            />
+            <TokenCreationForm />
           </div>
           <div className="space-y-6">
-            <PreviewCard tokenData={tokenData} />
-            <CreationGuide />
+            <TokenPreview {...tokenData} />
           </div>
         </div>
       </div>
